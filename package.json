@@ -1,0 +1,24 @@
+{
+    "name": "marsweatherapp",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "description": "A web application that displays Mars weather data",
+    "keywords": ["mars", "weather", "nasa", "aws"],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "express": "^4.18.2",
+        "axios": "^1.6.2",
+        "aws-sdk": "^2.1499.0",
+        "dotenv": "^16.3.1",
+        "cors": "^2.8.5"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
