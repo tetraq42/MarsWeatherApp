@@ -1,4 +1,4 @@
-/* Modern UI Design for Mars Weather App - Based on Reference Design */
+/* Modern UI Design for Mars Weather App - Fixed Version */
 :root {
     /* Dark futuristic color palette */
     --background-dark: #0a0a0f;
@@ -31,13 +31,16 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     font-family: 'Inter', 'SF Pro Display', 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
     color: var(--text-primary);
     line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
 }
 
 /* Import Google Fonts */
@@ -87,7 +90,7 @@ body::after {
     grid-template-columns: 320px 1fr;
     gap: 24px;
     flex: 1;
-    height: calc(100vh - 100px);
+    max-height: calc(100vh - 120px);
     overflow: hidden;
 }
 
@@ -102,6 +105,7 @@ body::after {
     padding: 24px;
     display: flex;
     flex-direction: column;
+    height: 100%;
     overflow-y: auto;
     transition: all 0.3s ease;
 }
@@ -341,6 +345,7 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    height: 100%;
     overflow-y: auto;
 }
 
@@ -353,7 +358,6 @@ body::after {
     -webkit-backdrop-filter: blur(var(--blur-strength));
     box-shadow: var(--card-shadow);
     padding: 24px;
-    flex: 1;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -372,6 +376,7 @@ body::after {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 8px;
+    color: var(--text-primary);
 }
 
 .forecast-header p {
@@ -381,11 +386,11 @@ body::after {
 
 /* Mars image display */
 .mars-image-container {
-    flex: 1;
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 24px;
+    height: 300px;
 }
 
 .mars-image {
@@ -529,12 +534,17 @@ body::after {
 
 /* Loading state */
 .loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(10, 10, 15, 0.9);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    padding: 40px 0;
+    z-index: 1000;
 }
 
 .loading i {
@@ -554,12 +564,17 @@ body::after {
 
 /* Error message */
 .error-message {
-    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(10, 10, 15, 0.9);
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    padding: 40px 0;
+    z-index: 1000;
 }
 
 .error-message i {
@@ -604,44 +619,6 @@ footer a:hover {
     animation: spin 1.5s linear infinite;
 }
 
-/* Circular indicator for humidity */
-.circular-indicator {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-}
-
-.circular-indicator svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-}
-
-.circular-indicator circle {
-    fill: none;
-    stroke-width: 8;
-    stroke-linecap: round;
-    stroke: rgba(255, 255, 255, 0.1);
-}
-
-.circular-indicator .progress {
-    stroke: var(--accent-yellow);
-    stroke-dasharray: 251.2;
-    stroke-dashoffset: calc(251.2 - (251.2 * var(--percentage)) / 100);
-    transition: stroke-dashoffset 0.5s ease;
-}
-
-.circular-indicator .percentage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--accent-yellow);
-}
-
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .app-layout {
@@ -651,22 +628,27 @@ footer a:hover {
 }
 
 @media (max-width: 900px) {
-    .app-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        height: auto;
-    }
-    
-    .sidebar {
-        height: auto;
-    }
-    
-    .main-content {
-        height: auto;
+    html, body {
+        overflow: auto;
     }
     
     .container {
         height: auto;
+    }
+    
+    .app-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        max-height: none;
+        overflow: visible;
+    }
+    
+    .sidebar, .main-content {
+        overflow: visible;
+    }
+    
+    .mars-image-container {
+        height: 250px;
     }
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mars Weather App</title>
+    <title>Mars Weather</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -106,30 +106,6 @@
                         <div class="forecast-grid">
                             <!-- Placeholder for historical data -->
                             <!-- Will be populated with JavaScript -->
-                            <div class="forecast-day">
-                                <div class="day-name">Sol 2999</div>
-                                <div class="day-icon"><i class="fas fa-sun"></i></div>
-                                <div class="day-temp">-23°C</div>
-                                <div class="day-condition">Clear</div>
-                            </div>
-                            <div class="forecast-day">
-                                <div class="day-name">Sol 2998</div>
-                                <div class="day-icon"><i class="fas fa-wind"></i></div>
-                                <div class="day-temp">-25°C</div>
-                                <div class="day-condition">Windy</div>
-                            </div>
-                            <div class="forecast-day">
-                                <div class="day-name">Sol 2997</div>
-                                <div class="day-icon"><i class="fas fa-smog"></i></div>
-                                <div class="day-temp">-22°C</div>
-                                <div class="day-condition">Dusty</div>
-                            </div>
-                            <div class="forecast-day">
-                                <div class="day-name">Sol 2996</div>
-                                <div class="day-icon"><i class="fas fa-sun"></i></div>
-                                <div class="day-temp">-21°C</div>
-                                <div class="day-condition">Clear</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,24 +121,21 @@
                         Mars has a much thinner atmosphere than Earth, resulting in more extreme temperature variations and lower atmospheric pressure.
                         The average temperature on Mars is about -60°C (-80°F), with temperatures at the equator sometimes reaching 20°C (68°F).
                     </p>
-                    <p>
-                        <strong>Note:</strong> NASA's InSight mission, which provided this weather data, has concluded its operations.
-                        This application may use historical or simulated data when live data is unavailable.
-                    </p>
                     <div class="mars-image-info">
                         <p id="mars-image-attribution">Mars images courtesy of NASA/JPL-Caltech</p>
                     </div>
                 </div>
+                
+                <!-- Footer -->
+                <footer>
+                    <p>Mars Weather App &copy; 2023 | Data provided by NASA's Mars Weather Service</p>
+                    <p>
+                        <a href="https://api.nasa.gov/" target="_blank">NASA API</a> |
+                        <a href="https://mars.nasa.gov/" target="_blank">Mars Exploration Program</a>
+                    </p>
+                </footer>
             </div>
         </div>
-
-        <footer>
-            <p>Mars Weather App &copy; 2023 | Data provided by NASA's Mars Weather Service</p>
-            <p>
-                <a href="https://api.nasa.gov/" target="_blank">NASA API</a> |
-                <a href="https://mars.nasa.gov/" target="_blank">Mars Exploration Program</a>
-            </p>
-        </footer>
     </div>
 
     <!-- Loading overlay -->
@@ -172,7 +145,7 @@
     </div>
 
     <!-- Error message -->
-    <div class="error-message" id="error-message" style="display: none;">
+    <div class="error-message" id="error-message">
         <i class="fas fa-exclamation-triangle"></i>
         <p>Unable to fetch Mars weather data. Please try again later.</p>
         <button id="retry-btn" class="refresh-btn">Try Again</button>
