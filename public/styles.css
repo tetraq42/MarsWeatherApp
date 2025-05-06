@@ -6,8 +6,8 @@
     --accent-color: #f9c846;       /* Warm gold accent */
     --text-color: #ffffff;         /* Clean white text */
     --background-color: #121218;   /* Deep space background */
-    --card-background: rgba(44, 44, 58, 0.8);  /* Semi-transparent card */
-    --card-border: rgba(255, 255, 255, 0.1);   /* Subtle border */
+    --card-background: rgba(44, 44, 58, 0.4);  /* More transparent card */
+    --card-border: rgba(255, 255, 255, 0.15);  /* Subtle border */
     --gradient-start: #ff4d4d;     /* Gradient start color */
     --gradient-end: #ff9e58;       /* Gradient end color - orange sunset */
     --shadow-color: rgba(0, 0, 0, 0.25);
@@ -41,7 +41,7 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, rgba(18, 18, 24, 0.4) 0%, rgba(18, 18, 24, 0.8) 100%);
+    background: radial-gradient(circle at center, rgba(18, 18, 24, 0.3) 0%, rgba(18, 18, 24, 0.7) 100%);
     z-index: -1;
     pointer-events: none;
 }
@@ -88,15 +88,15 @@ main {
 }
 
 .weather-card {
-    background-color: var(--card-background);
+    background-color: rgba(44, 44, 58, 0.25);  /* Very transparent background */
     border-radius: 16px;
     padding: 35px;
     box-shadow: 0 15px 30px var(--shadow-color);
     border: 1px solid var(--card-border);
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);  /* Increased blur for better readability */
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .weather-card::before {
@@ -180,19 +180,20 @@ main {
 }
 
 .weather-item {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.05);  /* Very subtle background */
     border-radius: 12px;
     padding: 25px;
     transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);  /* Strong blur effect */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .weather-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.08);  /* Slightly more visible on hover */
 }
 
 .weather-item h3 {
@@ -277,13 +278,13 @@ main {
 
 /* Info section */
 .info-section {
-    background-color: var(--card-background);
+    background-color: rgba(44, 44, 58, 0.25);  /* Very transparent background */
     border-radius: 16px;
     padding: 35px;
     box-shadow: 0 15px 30px var(--shadow-color);
     border: 1px solid var(--card-border);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);  /* Increased blur for better readability */
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .info-section h2 {
