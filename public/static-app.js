@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // DOM elements
     const loadingElement = document.getElementById('loading');
-    const weatherDataElement = document.getElementById('weather-data');
     const errorMessageElement = document.getElementById('error-message');
     const refreshButton = document.getElementById('refresh-btn');
     const retryButton = document.getElementById('retry-btn');
@@ -14,11 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tempMin = document.getElementById('temp-min');
     const tempMax = document.getElementById('temp-max');
     const windAvg = document.getElementById('wind-avg');
-    const windMin = document.getElementById('wind-min');
-    const windMax = document.getElementById('wind-max');
     const pressureAvg = document.getElementById('pressure-avg');
-    const pressureMin = document.getElementById('pressure-min');
-    const pressureMax = document.getElementById('pressure-max');
     const lastUpdated = document.getElementById('last-updated');
 
     // NASA API key
@@ -31,9 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Try to fetch from NASA API directly
             const apiUrl = `https://api.nasa.gov/insight_weather/?api_key=${NASA_API_KEY}&feedtype=json&ver=1.0`;
-            
-            // Use a CORS proxy if needed
-            // const apiUrl = `https://cors-anywhere.herokuapp.com/https://api.nasa.gov/insight_weather/?api_key=${NASA_API_KEY}&feedtype=json&ver=1.0`;
             
             const response = await fetch(apiUrl);
             
@@ -129,29 +121,66 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update wind data
         windAvg.textContent = formatValue(data.windSpeed.average);
-        windMin.textContent = formatValue(data.windSpeed.min);
-        windMax.textContent = formatValue(data.windSpeed.max);
         
         // Update pressure data
         pressureAvg.textContent = formatValue(data.pressure.average);
-        pressureMin.textContent = formatValue(data.pressure.min);
-        pressureMax.textContent = formatValue(data.pressure.max);
         
         // Update last updated timestamp
         lastUpdated.textContent = new Date().toLocaleTimeString('en-US', { 
             hour: '2-digit', 
-            minute: '2-digit',
-            second: '2-digit'
+            minute: '2-digit'
         });
         
-        // Show the weather data section
+        // Hide loading, show content
         hideLoading();
-        weatherDataElement.style.display = 'block';
-        errorMessageElement.style.display = 'none';
+        document.querySelector('.sidebar').style.display = 'flex';
+        document.querySelector('.main-content').style.display = 'flex';
+        
+        // Generate historical data for the forecast grid
+        generateHistoricalData(data);
         
         // Add note if this is mock data
         if (data.note) {
             console.info('Note:', data.note);
+        }
+    }
+
+    // Generate historical data for the forecast grid
+    function generateHistoricalData(currentData) {
+        const forecastGrid = document.querySelector('.forecast-grid');
+        if (!forecastGrid) return;
+        
+        // Clear existing content
+        forecastGrid.innerHTML = '';
+        
+        // Current sol
+        const currentSol = parseInt(currentData.sol);
+        
+        // Generate 4 days of historical data
+        for (let i = 0; i < 4; i++) {
+            const historicalSol = currentSol - i;
+            
+            // Create forecast day element
+            const forecastDay = document.createElement('div');
+            forecastDay.className = 'forecast-day';
+            
+            // Random temperature variation (within 5 degrees of current)
+            const tempVariation = Math.random() * 10 - 5;
+            const avgTemp = parseFloat(currentData.temperature.average) + tempVariation;
+            
+            // Random condition
+            const conditions = ['Clear', 'Dusty', 'Windy', 'Cold'];
+            const icons = ['fa-sun', 'fa-smog', 'fa-wind', 'fa-snowflake'];
+            const randomIndex = Math.floor(Math.random() * conditions.length);
+            
+            forecastDay.innerHTML = `
+                <div class="day-name">Sol ${historicalSol}</div>
+                <div class="day-icon"><i class="fas ${icons[randomIndex]}"></i></div>
+                <div class="day-temp">${avgTemp.toFixed(1)}°C</div>
+                <div class="day-condition">${conditions[randomIndex]}</div>
+            `;
+            
+            forecastGrid.appendChild(forecastDay);
         }
     }
 
@@ -171,8 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show loading state
     function showLoading() {
-        loadingElement.style.display = 'block';
-        weatherDataElement.style.display = 'none';
+        loadingElement.style.display = 'flex';
+        document.querySelector('.sidebar').style.display = 'none';
+        document.querySelector('.main-content').style.display = 'none';
         errorMessageElement.style.display = 'none';
     }
 
@@ -184,8 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show error message
     function showError() {
         loadingElement.style.display = 'none';
-        weatherDataElement.style.display = 'none';
-        errorMessageElement.style.display = 'block';
+        document.querySelector('.sidebar').style.display = 'none';
+        document.querySelector('.main-content').style.display = 'none';
+        errorMessageElement.style.display = 'flex';
     }
 
     // Event listeners

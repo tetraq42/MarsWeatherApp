@@ -6,124 +6,176 @@
     <title>Mars Weather App</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Mars Weather</h1>
-            <p class="subtitle">REAL-TIME CONDITIONS ON THE RED PLANET</p>
-        </header>
-
-        <main>
-            <!-- Weather Card - Primary Content -->
-            <div class="weather-card">
-                <div class="loading" id="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Establishing connection with Mars...</p>
+        <div class="app-layout">
+            <!-- Sidebar with key weather stats -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h1>Mars Weather</h1>
+                    <p>Real-time conditions on the Red Planet</p>
                 </div>
 
-                <div class="weather-data" id="weather-data" style="display: none;">
+                <div class="current-weather">
                     <div class="sol-info">
                         <h2>Sol <span id="sol-number">--</span></h2>
-                        <p class="earth-date">Earth Date: <span id="earth-date">--</span></p>
-                        <p class="season">Season: <span id="season">--</span></p>
+                        <span class="season" id="season">--</span>
                     </div>
+                    <p class="earth-date">Earth Date: <span id="earth-date">--</span></p>
 
-                    <div class="weather-grid">
-                        <div class="weather-item">
-                            <h3><i class="fas fa-temperature-high"></i> Temperature</h3>
-                            <div class="data-point">
-                                <span class="label">Average</span>
-                                <span class="value" id="temp-avg">--</span> °C
-                            </div>
-                            <div class="data-point">
-                                <span class="label">Low</span>
-                                <span class="value" id="temp-min">--</span> °C
-                            </div>
-                            <div class="data-point">
-                                <span class="label">High</span>
-                                <span class="value" id="temp-max">--</span> °C
-                            </div>
+                    <div class="temperature-display">
+                        <div class="temp-icon">
+                            <i class="fas fa-temperature-high"></i>
                         </div>
-
-                        <div class="weather-item">
-                            <h3><i class="fas fa-wind"></i> Wind</h3>
-                            <div class="data-point">
-                                <span class="label">Average</span>
-                                <span class="value" id="wind-avg">--</span> m/s
-                            </div>
-                            <div class="data-point">
-                                <span class="label">Low</span>
-                                <span class="value" id="wind-min">--</span> m/s
-                            </div>
-                            <div class="data-point">
-                                <span class="label">High</span>
-                                <span class="value" id="wind-max">--</span> m/s
-                            </div>
-                        </div>
-
-                        <div class="weather-item">
-                            <h3><i class="fas fa-compress-alt"></i> Pressure</h3>
-                            <div class="data-point">
-                                <span class="label">Average</span>
-                                <span class="value" id="pressure-avg">--</span> Pa
-                            </div>
-                            <div class="data-point">
-                                <span class="label">Low</span>
-                                <span class="value" id="pressure-min">--</span> Pa
-                            </div>
-                            <div class="data-point">
-                                <span class="label">High</span>
-                                <span class="value" id="pressure-max">--</span> Pa
-                            </div>
+                        <div>
+                            <span class="temp-value" id="temp-avg">--</span>
+                            <span class="temp-unit">°C</span>
                         </div>
                     </div>
 
-                    <div class="refresh-section">
-                        <button id="refresh-btn" class="refresh-btn">
-                            <i class="fas fa-sync-alt"></i> Refresh Data
-                        </button>
-                        <p class="last-updated">Last updated: <span id="last-updated">--</span></p>
+                    <div class="temp-range">
+                        <div class="temp-min">
+                            <div class="temp-label">Min</div>
+                            <div class="value" id="temp-min">--</div>
+                        </div>
+                        <div class="temp-max">
+                            <div class="temp-label">Max</div>
+                            <div class="value" id="temp-max">--</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="error-message" id="error-message" style="display: none;">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>Unable to fetch Mars weather data. Please try again later.</p>
-                    <button id="retry-btn" class="refresh-btn">Try Again</button>
+                <div class="weather-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">
+                            <i class="fas fa-wind"></i> Wind Speed
+                        </div>
+                        <div>
+                            <span class="stat-value" id="wind-avg">--</span>
+                            <span class="stat-unit">m/s</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">
+                            <i class="fas fa-compress-alt"></i> Pressure
+                        </div>
+                        <div>
+                            <span class="stat-value" id="pressure-avg">--</span>
+                            <span class="stat-unit">Pa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hourly-trend">
+                    <h3 class="section-title">Temperature Trend</h3>
+                    <div class="trend-graph">
+                        <!-- Placeholder for temperature trend graph -->
+                        <!-- Will be implemented with JavaScript -->
+                    </div>
+                </div>
+
+                <div class="last-updated">
+                    <span>Updated: <span id="last-updated">--</span></span>
+                    <button id="refresh-btn" class="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
                 </div>
             </div>
 
-            <!-- Info Section - Secondary Content -->
-            <div class="info-section">
-                <h2>About Mars Weather</h2>
-                <p>
-                    This application displays the latest weather data from Mars, collected by NASA's instruments on the Red Planet.
-                    The Martian sol is slightly longer than an Earth day at 24 hours and 39 minutes.
-                </p>
-                <p>
-                    Mars has a much thinner atmosphere than Earth, resulting in more extreme temperature variations and lower atmospheric pressure.
-                    The average temperature on Mars is about -60°C (-80°F), with temperatures at the equator sometimes reaching 20°C (68°F).
-                </p>
-                <p>
-                    <strong>Note:</strong> NASA's InSight mission, which provided this weather data, has concluded its operations.
-                    This application may use historical or simulated data when live data is unavailable.
-                </p>
-                <div class="mars-image-info">
-                    <p id="mars-image-attribution">Mars background image courtesy of NASA/JPL-Caltech</p>
+            <!-- Main content area -->
+            <div class="main-content">
+                <!-- Weather forecast panel -->
+                <div class="forecast-panel">
+                    <div class="forecast-header">
+                        <h2>Mars Surface Conditions</h2>
+                        <p>Current weather data from NASA's Mars instruments</p>
+                    </div>
+
+                    <div class="mars-image-container">
+                        <img src="" alt="Mars Surface" class="mars-image" id="mars-image">
+                        <div class="image-overlay">
+                            <h3>Mars Rover Image</h3>
+                            <p id="mars-image-caption">Image captured by NASA's Mars Rover</p>
+                        </div>
+                    </div>
+
+                    <div class="multi-day-forecast">
+                        <h3 class="section-title">Historical Data</h3>
+                        <div class="forecast-grid">
+                            <!-- Placeholder for historical data -->
+                            <!-- Will be populated with JavaScript -->
+                            <div class="forecast-day">
+                                <div class="day-name">Sol 2999</div>
+                                <div class="day-icon"><i class="fas fa-sun"></i></div>
+                                <div class="day-temp">-23°C</div>
+                                <div class="day-condition">Clear</div>
+                            </div>
+                            <div class="forecast-day">
+                                <div class="day-name">Sol 2998</div>
+                                <div class="day-icon"><i class="fas fa-wind"></i></div>
+                                <div class="day-temp">-25°C</div>
+                                <div class="day-condition">Windy</div>
+                            </div>
+                            <div class="forecast-day">
+                                <div class="day-name">Sol 2997</div>
+                                <div class="day-icon"><i class="fas fa-smog"></i></div>
+                                <div class="day-temp">-22°C</div>
+                                <div class="day-condition">Dusty</div>
+                            </div>
+                            <div class="forecast-day">
+                                <div class="day-name">Sol 2996</div>
+                                <div class="day-icon"><i class="fas fa-sun"></i></div>
+                                <div class="day-temp">-21°C</div>
+                                <div class="day-condition">Clear</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info section -->
+                <div class="info-section">
+                    <h2>About Mars Weather</h2>
+                    <p>
+                        This application displays the latest weather data from Mars, collected by NASA's instruments on the Red Planet.
+                        The Martian sol is slightly longer than an Earth day at 24 hours and 39 minutes.
+                    </p>
+                    <p>
+                        Mars has a much thinner atmosphere than Earth, resulting in more extreme temperature variations and lower atmospheric pressure.
+                        The average temperature on Mars is about -60°C (-80°F), with temperatures at the equator sometimes reaching 20°C (68°F).
+                    </p>
+                    <p>
+                        <strong>Note:</strong> NASA's InSight mission, which provided this weather data, has concluded its operations.
+                        This application may use historical or simulated data when live data is unavailable.
+                    </p>
+                    <div class="mars-image-info">
+                        <p id="mars-image-attribution">Mars images courtesy of NASA/JPL-Caltech</p>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Footer spans both columns -->
-            <footer>
-                <p>Mars Weather App &copy; 2023 | Data provided by NASA's Mars Weather Service</p>
-                <p>
-                    <a href="https://api.nasa.gov/" target="_blank">NASA API</a> |
-                    <a href="https://mars.nasa.gov/" target="_blank">Mars Exploration Program</a>
-                </p>
-            </footer>
-        </main>
+        <footer>
+            <p>Mars Weather App &copy; 2023 | Data provided by NASA's Mars Weather Service</p>
+            <p>
+                <a href="https://api.nasa.gov/" target="_blank">NASA API</a> |
+                <a href="https://mars.nasa.gov/" target="_blank">Mars Exploration Program</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Loading overlay -->
+    <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Establishing connection with Mars...</p>
+    </div>
+
+    <!-- Error message -->
+    <div class="error-message" id="error-message" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Unable to fetch Mars weather data. Please try again later.</p>
+        <button id="retry-btn" class="refresh-btn">Try Again</button>
     </div>
 
     <script src="static-app.js"></script>

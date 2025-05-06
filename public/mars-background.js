@@ -1,19 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Mars background script loaded');
+    
     // NASA API key
     const NASA_API_KEY = 'SDCqFh0iMgItHSP4eOWDg3fTf6vYW1ku9XPsndgg';
     
     // Function to fetch Mars image from NASA API
     async function fetchMarsImage() {
         try {
-            // Options for different Mars image sources:
+            // Mars Rover Photos API (Curiosity)
+            const roverUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&camera=NAVCAM&api_key=${NASA_API_KEY}`;
             
-            // 1. Mars Rover Photos API (Curiosity, Opportunity, Spirit)
-            const roverUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=${NASA_API_KEY}`;
-            
-            // 2. NASA Image and Video Library API with Mars search
-            const libraryUrl = `https://images-api.nasa.gov/search?q=mars%20surface&media_type=image`;
-            
-            // Using the Mars Rover API for this example
+            console.log('Fetching Mars rover images...');
             const response = await fetch(roverUrl);
             
             if (!response.ok) {
@@ -30,30 +27,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Set the background image
                 document.body.style.setProperty('--mars-background-image', `url('${photo.img_src}')`);
-                document.body.classList.add('has-mars-background');
                 
-                // Add image attribution if container exists
-                const attributionContainer = document.getElementById('mars-image-attribution');
-                if (attributionContainer) {
-                    attributionContainer.innerHTML = `
-                        Mars image captured by ${photo.rover.name} rover on 
-                        ${new Date(photo.earth_date).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                        })}
-                        (Sol ${photo.sol})
-                    `;
+                // Set the Mars image in the main content area
+                const marsImageElement = document.getElementById('mars-image');
+                if (marsImageElement) {
+                    marsImageElement.src = photo.img_src;
+                    marsImageElement.alt = `Mars surface captured by ${photo.rover.name} rover`;
                 }
                 
-                // Set the background image using inline style as fallback
+                // Set image caption
+                const captionElement = document.getElementById('mars-image-caption');
+                if (captionElement) {
+                    captionElement.textContent = `Image captured by ${photo.rover.name} rover on ${new Date(photo.earth_date).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })} (Sol ${photo.sol})`;
+                }
+                
+                // Set the background image using inline style
                 document.body.style.backgroundImage = `url('${photo.img_src}')`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundPosition = 'center';
                 document.body.style.backgroundAttachment = 'fixed';
                 document.body.style.backgroundRepeat = 'no-repeat';
                 
-                // Apply the background to the ::before pseudo-element for better control
+                // Apply the background to the ::before pseudo-element
                 const style = document.createElement('style');
                 style.textContent = `
                     body::before {
@@ -62,7 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 document.head.appendChild(style);
                 
-                console.log('Mars background image set successfully');
+                console.log('Mars image set successfully');
+                
+                // Add image attribution
+                const attributionContainer = document.getElementById('mars-image-attribution');
+                if (attributionContainer) {
+                    attributionContainer.innerHTML = `
+                        Mars images courtesy of NASA/JPL-Caltech - Captured by ${photo.rover.name} rover
+                    `;
+                }
+                
                 return photo;
             } else {
                 throw new Error('No Mars photos found in the API response');
@@ -79,6 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.backgroundAttachment = 'fixed';
             document.body.style.backgroundRepeat = 'no-repeat';
             
+            // Set the Mars image in the main content area
+            const marsImageElement = document.getElementById('mars-image');
+            if (marsImageElement) {
+                marsImageElement.src = fallbackImage;
+                marsImageElement.alt = 'Mars surface (fallback image)';
+            }
+            
             // Apply to ::before as well
             const style = document.createElement('style');
             style.textContent = `
@@ -92,6 +107,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    // Function to create a simple temperature trend graph
+    function createTemperatureTrendGraph() {
+        const trendGraph = document.querySelector('.trend-graph');
+        if (!trendGraph) return;
+        
+        // Create SVG element
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '100%');
+        svg.setAttribute('height', '100%');
+        svg.setAttribute('viewBox', '0 0 100 50');
+        
+        // Create path for the temperature line
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        
+        // Generate random data points for demonstration
+        const points = [];
+        for (let i = 0; i < 24; i++) {
+            const x = i * (100 / 23);
+            const y = 25 + Math.sin(i * 0.5) * 10 + (Math.random() * 5 - 2.5);
+            points.push(`${x},${y}`);
+        }
+        
+        // Create the path data
+        const pathData = `M ${points.join(' L ')}`;
+        path.setAttribute('d', pathData);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#ff7b54');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+        
+        // Add a gradient
+        const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        gradient.setAttribute('id', 'tempGradient');
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '0%');
+        
+        const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('stop-color', '#ff5757');
+        
+        const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', '#ffcb45');
+        
+        gradient.appendChild(stop1);
+        gradient.appendChild(stop2);
+        
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        defs.appendChild(gradient);
+        
+        svg.appendChild(defs);
+        path.setAttribute('stroke', 'url(#tempGradient)');
+        
+        // Add the path to the SVG
+        svg.appendChild(path);
+        
+        // Add the SVG to the trend graph
+        trendGraph.appendChild(svg);
+    }
+    
     // Fetch and set the Mars background image
     fetchMarsImage();
+    
+    // Create temperature trend graph
+    createTemperatureTrendGraph();
 });
