@@ -6,7 +6,7 @@
     --accent-color: #f9c846;       /* Warm gold accent */
     --text-color: #ffffff;         /* Clean white text */
     --background-color: #121218;   /* Deep space background */
-    --card-background: rgba(44, 44, 58, 0.4);  /* More transparent card */
+    --card-background: rgba(44, 44, 58, 0.25);  /* Very transparent background */
     --card-border: rgba(255, 255, 255, 0.15);  /* Subtle border */
     --gradient-start: #ff4d4d;     /* Gradient start color */
     --gradient-end: #ff9e58;       /* Gradient end color - orange sunset */
@@ -47,56 +47,59 @@ body::after {
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: 15px 20px;
     position: relative;
     z-index: 1;
 }
 
-/* Header styles */
+/* Header styles - Compact for above the fold */
 header {
     text-align: center;
-    margin-bottom: 50px;
-    padding: 20px 0;
+    margin-bottom: 20px;
+    padding: 10px 0;
 }
 
 header h1 {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
     font-weight: 700;
     background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     letter-spacing: -0.5px;
 }
 
 .subtitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--text-color);
     opacity: 0.8;
     font-weight: 300;
     letter-spacing: 1px;
 }
 
-/* Main content styles */
+/* Main content styles - Two-column layout for desktop */
 main {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    min-height: calc(100vh - 200px); /* Ensure main content fits in viewport */
 }
 
+/* Weather card - Primary content */
 .weather-card {
-    background-color: rgba(44, 44, 58, 0.25);  /* Very transparent background */
+    background-color: rgba(44, 44, 58, 0.25);
     border-radius: 16px;
-    padding: 35px;
+    padding: 25px;
     box-shadow: 0 15px 30px var(--shadow-color);
     border: 1px solid var(--card-border);
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(15px);  /* Increased blur for better readability */
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+    height: fit-content;
 }
 
 .weather-card::before {
@@ -109,23 +112,23 @@ main {
     background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
 }
 
-/* Loading state */
+/* Loading state - Compact */
 .loading {
     text-align: center;
-    padding: 60px 0;
+    padding: 30px 0;
 }
 
 .loading i {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .loading p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--text-color);
     opacity: 0.8;
     font-weight: 300;
@@ -135,88 +138,89 @@ main {
 /* Error message */
 .error-message {
     text-align: center;
-    padding: 50px 0;
+    padding: 30px 0;
     color: var(--primary-color);
 }
 
 .error-message i {
-    font-size: 3.5rem;
-    margin-bottom: 25px;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
 }
 
-/* Weather data display */
+/* Weather data display - Compact */
 .sol-info {
     text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 25px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sol-info h2 {
-    font-size: 3rem;
+    font-size: 2.2rem;
     color: var(--accent-color);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     font-weight: 600;
 }
 
 .earth-date, .season {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     opacity: 0.8;
     font-weight: 300;
     letter-spacing: 0.5px;
 }
 
 .season {
-    margin-top: 5px;
+    margin-top: 3px;
     color: var(--accent-color);
     font-weight: 400;
 }
 
+/* Weather grid - Compact 3-column layout */
 .weather-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 35px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .weather-item {
-    background-color: rgba(255, 255, 255, 0.05);  /* Very subtle background */
+    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    padding: 25px;
+    padding: 15px;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);  /* Strong blur effect */
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .weather-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.2);
-    background-color: rgba(255, 255, 255, 0.08);  /* Slightly more visible on hover */
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .weather-item h3 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: var(--text-color);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     font-weight: 500;
 }
 
 .weather-item h3 i {
     color: var(--primary-color);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 .data-point {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-    padding-bottom: 10px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    padding-bottom: 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -236,26 +240,27 @@ main {
     color: var(--accent-color);
 }
 
-/* Refresh section */
+/* Refresh section - Compact */
 .refresh-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    margin-top: 30px;
+    justify-content: space-between;
+    margin-top: 15px;
 }
 
 .refresh-btn {
     background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 8px 20px;
     border-radius: 30px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
 }
@@ -270,30 +275,30 @@ main {
 }
 
 .last-updated {
-    margin-top: 15px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     opacity: 0.6;
     font-weight: 300;
 }
 
-/* Info section */
+/* Info section - Secondary content */
 .info-section {
-    background-color: rgba(44, 44, 58, 0.25);  /* Very transparent background */
+    background-color: rgba(44, 44, 58, 0.25);
     border-radius: 16px;
-    padding: 35px;
+    padding: 25px;
     box-shadow: 0 15px 30px var(--shadow-color);
     border: 1px solid var(--card-border);
-    backdrop-filter: blur(15px);  /* Increased blur for better readability */
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+    height: fit-content;
 }
 
 .info-section h2 {
     color: var(--accent-color);
-    margin-bottom: 25px;
-    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
     font-weight: 600;
     position: relative;
-    padding-bottom: 15px;
+    padding-bottom: 12px;
 }
 
 .info-section h2::after {
@@ -301,17 +306,17 @@ main {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60px;
+    width: 50px;
     height: 3px;
     background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
     border-radius: 3px;
 }
 
 .info-section p {
-    margin-bottom: 20px;
-    line-height: 1.8;
+    margin-bottom: 15px;
+    line-height: 1.6;
     font-weight: 300;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
 }
 
 .info-section strong {
@@ -321,11 +326,11 @@ main {
 
 /* Mars image attribution */
 .mars-image-info {
-    margin-top: 30px;
-    font-size: 0.9rem;
+    margin-top: 20px;
+    font-size: 0.85rem;
     opacity: 0.7;
     text-align: center;
-    padding-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -339,15 +344,16 @@ main {
     opacity: 0.8;
 }
 
-/* Footer styles */
+/* Footer styles - Compact */
 footer {
-    margin-top: 70px;
+    margin-top: 25px;
     text-align: center;
-    padding: 30px 0;
+    padding: 15px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     opacity: 0.7;
     font-weight: 300;
+    grid-column: 1 / -1; /* Span across both columns */
 }
 
 footer a {
@@ -360,29 +366,6 @@ footer a:hover {
     opacity: 0.8;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2.5rem;
-    }
-    
-    .weather-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .weather-item {
-        margin-bottom: 5px;
-    }
-    
-    .weather-card, .info-section {
-        padding: 25px;
-    }
-    
-    .sol-info h2 {
-        font-size: 2.5rem;
-    }
-}
-
 /* Animation for loading spinner */
 @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -391,4 +374,53 @@ footer a:hover {
 
 .loading i.fa-spinner {
     animation: spin 1.5s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .weather-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    footer {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .weather-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .weather-card, .info-section {
+        padding: 20px;
+    }
+    
+    .sol-info h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .refresh-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .last-updated {
+        text-align: center;
+    }
 }
