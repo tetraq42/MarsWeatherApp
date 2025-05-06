@@ -1,4 +1,4 @@
-/* Modern UI Design for Mars Weather App - Fixed Position Columns */
+/* Modern UI Design for Mars Weather App - Simplified Scrolling */
 :root {
     /* Dark futuristic color palette */
     --background-dark: #0a0a0f;
@@ -32,8 +32,7 @@
 }
 
 html, body {
-    height: 100%;
-    overflow: hidden; /* Prevent body scrolling */
+    min-height: 100%;
 }
 
 body {
@@ -79,10 +78,6 @@ body::after {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Prevent container scrolling */
 }
 
 /* App layout - Split view with sidebar */
@@ -90,9 +85,7 @@ body::after {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 24px;
-    flex: 1;
-    height: calc(100vh - 40px); /* Account for container padding */
-    overflow: hidden; /* Prevent app layout scrolling */
+    margin-bottom: 24px;
 }
 
 /* Sidebar styles */
@@ -106,8 +99,6 @@ body::after {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow-y: auto; /* Allow sidebar to scroll independently */
     transition: all 0.3s ease;
 }
 
@@ -346,8 +337,6 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    height: 100%;
-    overflow-y: auto; /* Allow main content to scroll independently */
 }
 
 /* Weather forecast panel */
@@ -648,25 +637,9 @@ footer a:hover {
 }
 
 @media (max-width: 900px) {
-    html, body {
-        overflow: auto; /* Allow scrolling on mobile */
-    }
-    
-    .container {
-        height: auto;
-        overflow: visible;
-    }
-    
     .app-layout {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
-        height: auto;
-        overflow: visible;
-    }
-    
-    .sidebar, .main-content {
-        height: auto;
-        overflow: visible;
     }
     
     .mars-image-container {
