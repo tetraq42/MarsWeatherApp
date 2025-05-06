@@ -6,19 +6,20 @@
     <title>Mars Weather App</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Mars Weather App</h1>
-            <p class="subtitle">Current weather conditions on the Red Planet</p>
+            <h1>Mars Weather</h1>
+            <p class="subtitle">REAL-TIME CONDITIONS ON THE RED PLANET</p>
         </header>
 
         <main>
             <div class="weather-card">
                 <div class="loading" id="loading">
                     <i class="fas fa-spinner fa-spin"></i>
-                    <p>Fetching data from Mars...</p>
+                    <p>Establishing connection with Mars...</p>
                 </div>
 
                 <div class="weather-data" id="weather-data" style="display: none;">
@@ -32,31 +33,31 @@
                         <div class="weather-item">
                             <h3><i class="fas fa-temperature-high"></i> Temperature</h3>
                             <div class="data-point">
-                                <span class="label">Average:</span>
+                                <span class="label">Average</span>
                                 <span class="value" id="temp-avg">--</span> °C
                             </div>
                             <div class="data-point">
-                                <span class="label">Low:</span>
+                                <span class="label">Low</span>
                                 <span class="value" id="temp-min">--</span> °C
                             </div>
                             <div class="data-point">
-                                <span class="label">High:</span>
+                                <span class="label">High</span>
                                 <span class="value" id="temp-max">--</span> °C
                             </div>
                         </div>
 
                         <div class="weather-item">
-                            <h3><i class="fas fa-wind"></i> Wind</h3>
+                            <h3><i class="fas fa-wind"></i> Wind Speed</h3>
                             <div class="data-point">
-                                <span class="label">Average:</span>
+                                <span class="label">Average</span>
                                 <span class="value" id="wind-avg">--</span> m/s
                             </div>
                             <div class="data-point">
-                                <span class="label">Low:</span>
+                                <span class="label">Low</span>
                                 <span class="value" id="wind-min">--</span> m/s
                             </div>
                             <div class="data-point">
-                                <span class="label">High:</span>
+                                <span class="label">High</span>
                                 <span class="value" id="wind-max">--</span> m/s
                             </div>
                         </div>
@@ -64,15 +65,15 @@
                         <div class="weather-item">
                             <h3><i class="fas fa-compress-alt"></i> Pressure</h3>
                             <div class="data-point">
-                                <span class="label">Average:</span>
+                                <span class="label">Average</span>
                                 <span class="value" id="pressure-avg">--</span> Pa
                             </div>
                             <div class="data-point">
-                                <span class="label">Low:</span>
+                                <span class="label">Low</span>
                                 <span class="value" id="pressure-min">--</span> Pa
                             </div>
                             <div class="data-point">
-                                <span class="label">High:</span>
+                                <span class="label">High</span>
                                 <span class="value" id="pressure-max">--</span> Pa
                             </div>
                         </div>
@@ -108,7 +109,7 @@
                     This application may use historical or simulated data when live data is unavailable.
                 </p>
                 <div class="mars-image-info">
-                    <p id="mars-image-attribution">Mars background image provided by NASA</p>
+                    <p id="mars-image-attribution">Mars background image courtesy of NASA/JPL-Caltech</p>
                 </div>
             </div>
         </main>
