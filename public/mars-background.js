@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const randomIndex = Math.floor(Math.random() * Math.min(data.photos.length, 25));
                 const photo = data.photos[randomIndex];
                 
+                console.log('Selected photo:', photo);
+                
                 // Set the background image
                 document.body.style.setProperty('--mars-background-image', `url('${photo.img_src}')`);
                 
@@ -35,14 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     marsImageElement.alt = `Mars surface captured by ${photo.rover.name} rover`;
                 }
                 
-                // Set image caption
+                // Format the Earth date properly
+                const earthDate = new Date(photo.earth_date);
+                const formattedDate = earthDate.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                // Set image caption with detailed information
                 const captionElement = document.getElementById('mars-image-caption');
                 if (captionElement) {
-                    captionElement.textContent = `Image captured by ${photo.rover.name} rover on ${new Date(photo.earth_date).toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    })} (Sol ${photo.sol})`;
+                    captionElement.innerHTML = `
+                        Image captured by ${photo.rover.name} rover on ${formattedDate} (Sol ${photo.sol})<br>
+                        Camera: ${photo.camera.full_name} (${photo.camera.name})
+                    `;
                 }
                 
                 // Set the background image using inline style
@@ -63,11 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 console.log('Mars image set successfully');
                 
-                // Add image attribution
+                // Add detailed image attribution
                 const attributionContainer = document.getElementById('mars-image-attribution');
                 if (attributionContainer) {
                     attributionContainer.innerHTML = `
-                        Mars images courtesy of NASA/JPL-Caltech - Captured by ${photo.rover.name} rover
+                        Mars image courtesy of NASA/JPL-Caltech - Captured by ${photo.rover.name} rover on ${formattedDate} (Sol ${photo.sol})
                     `;
                 }
                 
@@ -94,6 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 marsImageElement.alt = 'Mars surface (fallback image)';
             }
             
+            // Set fallback caption
+            const captionElement = document.getElementById('mars-image-caption');
+            if (captionElement) {
+                captionElement.textContent = 'Mars surface image from NASA archives';
+            }
+            
             // Apply to ::before as well
             const style = document.createElement('style');
             style.textContent = `
@@ -102,6 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             `;
             document.head.appendChild(style);
+            
+            // Add fallback attribution
+            const attributionContainer = document.getElementById('mars-image-attribution');
+            if (attributionContainer) {
+                attributionContainer.textContent = 'Mars image courtesy of NASA/JPL-Caltech';
+            }
             
             return null;
         }
