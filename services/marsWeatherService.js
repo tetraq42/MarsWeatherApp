@@ -14,29 +14,42 @@ async function getMarsWeather() {
     // Note: As of late 2023, the InSight mission has concluded, so this API might not return current data
     // You may need to switch to a different data source or use historical data
     
-    // For deployment, we'll skip the actual API call and use mock data directly
-    // This ensures the app works even if the API is unavailable or environment variables aren't set
+    // Use environment variables or fallback to hardcoded values if they're not set
+    const apiUrl = process.env.NASA_API_URL || 'https://api.nasa.gov/insight_weather';
+    const apiKey = process.env.NASA_API_KEY || 'DEMO_KEY';
     
-    // Uncomment this section if you want to try the actual API call
-    /*
-    const response = await axios.get(`${process.env.NASA_API_URL}`, {
+    console.log('Attempting to fetch data from NASA API...');
+    console.log(`API URL: ${apiUrl}`);
+    console.log(`Using API Key: ${apiKey.substring(0, 3)}...`); // Log only first few chars for security
+    
+    const response = await axios.get(apiUrl, {
       params: {
-        api_key: process.env.NASA_API_KEY,
+        api_key: apiKey,
         feedtype: 'json',
         ver: '1.0'
       }
     });
 
+    console.log('NASA API response received');
+    
     // Process the data
     const weatherData = processWeatherData(response.data);
-    */
     
-    // For now, always return mock data to ensure the app works in production
-    return getMockWeatherData();
+    // Save to DynamoDB (optional, can be enabled in production)
+    // await saveWeatherData(weatherData);
+    
+    return weatherData;
   } catch (error) {
-    console.error('Error fetching Mars weather data:', error);
+    console.error('Error fetching Mars weather data:', error.message);
+    if (error.response) {
+      console.error('API response error:', {
+        status: error.response.status,
+        data: error.response.data
+      });
+    }
     
-    // If the API fails, return mock data
+    // If the API fails, return mock data for development purposes
+    console.log('Falling back to mock data');
     return getMockWeatherData();
   }
 }
@@ -47,8 +60,11 @@ async function getMarsWeather() {
  * @returns {Object} Processed weather data
  */
 function processWeatherData(rawData) {
+  console.log('Processing weather data');
+  
   // If the API returns valid data, process it
   if (rawData && rawData.sol_keys && rawData.sol_keys.length > 0) {
+    console.log(`Found ${rawData.sol_keys.length} sols of data`);
     const latestSol = rawData.sol_keys[rawData.sol_keys.length - 1];
     const solData = rawData[latestSol];
     
@@ -74,6 +90,7 @@ function processWeatherData(rawData) {
     };
   }
   
+  console.log('No valid data found, using mock data');
   // If no valid data, return mock data
   return getMockWeatherData();
 }
