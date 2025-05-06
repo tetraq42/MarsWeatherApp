@@ -1,4 +1,4 @@
-/* Modern UI Design for Mars Weather App - Fixed Version */
+/* Modern UI Design for Mars Weather App - Fixed Position Columns */
 :root {
     /* Dark futuristic color palette */
     --background-dark: #0a0a0f;
@@ -33,9 +33,7 @@
 
 html, body {
     height: 100%;
-    /* Allow the page to scroll normally */
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden; /* Prevent body scrolling */
 }
 
 body {
@@ -81,9 +79,10 @@ body::after {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Prevent container scrolling */
 }
 
 /* App layout - Split view with sidebar */
@@ -92,7 +91,8 @@ body::after {
     grid-template-columns: 320px 1fr;
     gap: 24px;
     flex: 1;
-    /* Remove height constraint and overflow to allow page scrolling */
+    height: calc(100vh - 40px); /* Account for container padding */
+    overflow: hidden; /* Prevent app layout scrolling */
 }
 
 /* Sidebar styles */
@@ -106,9 +106,8 @@ body::after {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    /* Remove height and overflow to prevent independent scrolling */
-    height: auto;
-    overflow: visible;
+    height: 100%;
+    overflow-y: auto; /* Allow sidebar to scroll independently */
     transition: all 0.3s ease;
 }
 
@@ -347,9 +346,8 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    /* Remove height and overflow to prevent independent scrolling */
-    height: auto;
-    overflow: visible;
+    height: 100%;
+    overflow-y: auto; /* Allow main content to scroll independently */
 }
 
 /* Weather forecast panel */
@@ -622,6 +620,25 @@ footer a:hover {
     animation: spin 1.5s linear infinite;
 }
 
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .app-layout {
@@ -631,9 +648,25 @@ footer a:hover {
 }
 
 @media (max-width: 900px) {
+    html, body {
+        overflow: auto; /* Allow scrolling on mobile */
+    }
+    
+    .container {
+        height: auto;
+        overflow: visible;
+    }
+    
     .app-layout {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
+        height: auto;
+        overflow: visible;
+    }
+    
+    .sidebar, .main-content {
+        height: auto;
+        overflow: visible;
     }
     
     .mars-image-container {
