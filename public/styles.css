@@ -33,7 +33,9 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
+    /* Allow the page to scroll normally */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 body {
@@ -79,7 +81,7 @@ body::after {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -90,8 +92,7 @@ body::after {
     grid-template-columns: 320px 1fr;
     gap: 24px;
     flex: 1;
-    max-height: calc(100vh - 120px);
-    overflow: hidden;
+    /* Remove height constraint and overflow to allow page scrolling */
 }
 
 /* Sidebar styles */
@@ -105,8 +106,9 @@ body::after {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow-y: auto;
+    /* Remove height and overflow to prevent independent scrolling */
+    height: auto;
+    overflow: visible;
     transition: all 0.3s ease;
 }
 
@@ -345,8 +347,9 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    height: 100%;
-    overflow-y: auto;
+    /* Remove height and overflow to prevent independent scrolling */
+    height: auto;
+    overflow: visible;
 }
 
 /* Weather forecast panel */
@@ -628,23 +631,9 @@ footer a:hover {
 }
 
 @media (max-width: 900px) {
-    html, body {
-        overflow: auto;
-    }
-    
-    .container {
-        height: auto;
-    }
-    
     .app-layout {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
-        max-height: none;
-        overflow: visible;
-    }
-    
-    .sidebar, .main-content {
-        overflow: visible;
     }
     
     .mars-image-container {
