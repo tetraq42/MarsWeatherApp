@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars Weather App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mars Weather App</h1>
+            <p class="subtitle">Current weather conditions on the Red Planet</p>
+        </header>
+
+        <main>
+            <div class="weather-card">
+                <div class="loading" id="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Fetching data from Mars...</p>
+                </div>
+
+                <div class="weather-data" id="weather-data" style="display: none;">
+                    <div class="sol-info">
+                        <h2>Sol <span id="sol-number">--</span></h2>
+                        <p class="earth-date">Earth Date: <span id="earth-date">--</span></p>
+                        <p class="season">Season: <span id="season">--</span></p>
+                    </div>
+
+                    <div class="weather-grid">
+                        <div class="weather-item">
+                            <h3><i class="fas fa-temperature-high"></i> Temperature</h3>
+                            <div class="data-point">
+                                <span class="label">Average:</span>
+                                <span class="value" id="temp-avg">--</span> °C
+                            </div>
+                            <div class="data-point">
+                                <span class="label">Low:</span>
+                                <span class="value" id="temp-min">--</span> °C
+                            </div>
+                            <div class="data-point">
+                                <span class="label">High:</span>
+                                <span class="value" id="temp-max">--</span> °C
+                            </div>
+                        </div>
+
+                        <div class="weather-item">
+                            <h3><i class="fas fa-wind"></i> Wind</h3>
+                            <div class="data-point">
+                                <span class="label">Average:</span>
+                                <span class="value" id="wind-avg">--</span> m/s
+                            </div>
+                            <div class="data-point">
+                                <span class="label">Low:</span>
+                                <span class="value" id="wind-min">--</span> m/s
+                            </div>
+                            <div class="data-point">
+                                <span class="label">High:</span>
+                                <span class="value" id="wind-max">--</span> m/s
+                            </div>
+                        </div>
+
+                        <div class="weather-item">
+                            <h3><i class="fas fa-compress-alt"></i> Pressure</h3>
+                            <div class="data-point">
+                                <span class="label">Average:</span>
+                                <span class="value" id="pressure-avg">--</span> Pa
+                            </div>
+                            <div class="data-point">
+                                <span class="label">Low:</span>
+                                <span class="value" id="pressure-min">--</span> Pa
+                            </div>
+                            <div class="data-point">
+                                <span class="label">High:</span>
+                                <span class="value" id="pressure-max">--</span> Pa
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="refresh-section">
+                        <button id="refresh-btn" class="refresh-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                        <p class="last-updated">Last updated: <span id="last-updated">--</span></p>
+                    </div>
+                </div>
+
+                <div class="error-message" id="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Unable to fetch Mars weather data. Please try again later.</p>
+                    <button id="retry-btn" class="refresh-btn">Try Again</button>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>About Mars Weather</h2>
+                <p>
+                    This application displays the latest weather data from Mars, collected by NASA's instruments on the Red Planet.
+                    The Martian sol is slightly longer than an Earth day at 24 hours and 39 minutes.
+                </p>
+                <p>
+                    Mars has a much thinner atmosphere than Earth, resulting in more extreme temperature variations and lower atmospheric pressure.
+                    The average temperature on Mars is about -60°C (-80°F), with temperatures at the equator sometimes reaching 20°C (68°F).
+                </p>
+                <p>
+                    <strong>Note:</strong> NASA's InSight mission, which provided this weather data, has concluded its operations.
+                    This application may use historical or simulated data when live data is unavailable.
+                </p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Mars Weather App &copy; 2023 | Data provided by NASA's Mars Weather Service</p>
+            <p>
+                <a href="https://api.nasa.gov/" target="_blank">NASA API</a> |
+                <a href="https://mars.nasa.gov/" target="_blank">Mars Exploration Program</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="static-app.js"></script>
+</body>
+</html>
