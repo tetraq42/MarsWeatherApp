@@ -30,7 +30,7 @@ async function getMarsImages(roverName = 'curiosity', sol = 3000, cameraList = [
             if (response.data.photos && response.data.photos.length > 0) {
                 images = response.data.photos.slice(0, 5).map(photo => ({
                     id: photo.id,
-                    img_src: photo.img_src.replace(/^http:/, 'https:'), // Attempt to use HTTPS
+                    img_src: photo.img_src, // Use original HTTP URL
                     camera_full_name: photo.camera.full_name,
                     earth_date: photo.earth_date,
                     rover_name: photo.rover.name,
