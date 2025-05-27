@@ -609,6 +609,14 @@ footer a:hover {
     animation: spin 1.5s linear infinite;
 }
 
+.mock-note {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #777; /* A neutral, less prominent color */
+  margin-top: 10px;
+  text-align: center; /* Center the note text */
+}
+
 /* Custom scrollbar for better aesthetics */
 ::-webkit-scrollbar {
     width: 8px;

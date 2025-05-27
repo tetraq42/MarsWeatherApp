@@ -2,7 +2,7 @@ const axios = require('axios');
 const { saveWeatherData } = require('../config/awsConfig');
 const dotenv = require('dotenv');
 
-dotenv.config();
+// dotenv.config(); // Redundant: Called in main entry point (index.js)
 
 /**
  * Fetches Mars weather data from NASA's InSight API

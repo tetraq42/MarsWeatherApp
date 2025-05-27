@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pressureMin = document.getElementById('pressure-min');
     const pressureMax = document.getElementById('pressure-max');
     const lastUpdated = document.getElementById('last-updated');
+    const mockDataNoteElement = document.getElementById('mock-data-note');
 
     // Fetch weather data from the API
     async function fetchWeatherData() {
@@ -72,10 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
         pressureMax.textContent = formatValue(data.pressure.max);
         
         // Update last updated timestamp
-        lastUpdated.textContent = new Date().toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        const dataTimestamp = new Date(data.date);
+        lastUpdated.textContent = dataTimestamp.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit'
+            second: '2-digit',
+            timeZone: 'UTC' // Assuming data.date is UTC
         });
         
         // Show the weather data section
@@ -84,8 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessageElement.style.display = 'none';
         
         // Add note if this is mock data
-        if (data.note) {
-            console.info('Note:', data.note);
+        if (data.note && data.note.trim() !== '') {
+            mockDataNoteElement.textContent = data.note;
+            mockDataNoteElement.style.display = 'block';
+        } else {
+            mockDataNoteElement.textContent = '';
+            mockDataNoteElement.style.display = 'none';
         }
     }
 
@@ -108,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingElement.style.display = 'block';
         weatherDataElement.style.display = 'none';
         errorMessageElement.style.display = 'none';
+        if (mockDataNoteElement) mockDataNoteElement.style.display = 'none';
     }
 
     // Hide loading state
@@ -120,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingElement.style.display = 'none';
         weatherDataElement.style.display = 'none';
         errorMessageElement.style.display = 'block';
+        if (mockDataNoteElement) mockDataNoteElement.style.display = 'none';
     }
 
     // Event listeners
