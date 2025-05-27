@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastUpdated = document.getElementById('last-updated');
 
     // NASA API key
-    const NASA_API_KEY = 'DEMO_KEY'; // Replace with your actual key if running standalone
+    const NASA_API_KEY = 'SDCqFh0iMgItHSP4eOWDg3fTf6vYW1ku9XPsndgg'; // Replace with your actual key if running standalone
     
     // Fetch weather data directly from NASA API
     async function fetchWeatherData() {
