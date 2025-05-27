@@ -62,37 +62,47 @@ async function getMarsWeather() {
 function processWeatherData(rawData) {
   console.log('Processing weather data');
   
-  // If the API returns valid data, process it
   if (rawData && rawData.sol_keys && rawData.sol_keys.length > 0) {
     console.log(`Found ${rawData.sol_keys.length} sols of data`);
     const latestSol = rawData.sol_keys[rawData.sol_keys.length - 1];
     const solData = rawData[latestSol];
     
-    return {
+    // Ensure solData and its properties exist before accessing them
+    if (!solData) {
+        console.log('No data for latest sol, returning mock data');
+        return getMockWeatherData();
+    }
+
+    const weatherDataObject = {
       sol: latestSol,
-      date: solData.First_UTC,
+      date: solData.First_UTC || new Date().toISOString(), // Fallback for date
       temperature: {
-        average: solData.AT?.av || 'N/A',
-        min: solData.AT?.mn || 'N/A',
-        max: solData.AT?.mx || 'N/A',
+        average: solData.AT?.av ?? 'N/A', // Using nullish coalescing
+        min: solData.AT?.mn ?? 'N/A',
+        max: solData.AT?.mx ?? 'N/A',
       },
       windSpeed: {
-        average: solData.HWS?.av || 'N/A',
-        min: solData.HWS?.mn || 'N/A',
-        max: solData.HWS?.mx || 'N/A',
+        average: solData.HWS?.av ?? 'N/A',
+        min: solData.HWS?.mn ?? 'N/A',
+        max: solData.HWS?.mx ?? 'N/A',
       },
       pressure: {
-        average: solData.PRE?.av || 'N/A',
-        min: solData.PRE?.mn || 'N/A',
-        max: solData.PRE?.mx || 'N/A',
+        average: solData.PRE?.av ?? 'N/A',
+        min: solData.PRE?.mn ?? 'N/A',
+        max: solData.PRE?.mx ?? 'N/A',
       },
       season: solData.Season || 'N/A',
+      note: "Historical data from NASA's InSight Mission (concluded Dec 2022)." // Add historical note
     };
+    
+    console.log('Processed weather data:', weatherDataObject);
+    return weatherDataObject;
+
+  } else {
+    console.log('No valid sol_keys found or rawData is empty, using mock data');
+    // If no valid data, return mock data (which already includes its own note)
+    return getMockWeatherData();
   }
-  
-  console.log('No valid data found, using mock data');
-  // If no valid data, return mock data
-  return getMockWeatherData();
 }
 
 /**

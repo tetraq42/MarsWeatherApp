@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { getMarsWeather } = require('./services/marsWeatherService');
+const { getMarsImages } = require('./services/marsImageService'); // Added image service
 const { setupAWS } = require('./config/awsConfig');
 
 // Load environment variables
@@ -27,6 +28,40 @@ app.get('/api/weather', async (req, res) => {
   } catch (error) {
     console.error('Error fetching Mars weather data:', error);
     res.status(500).json({ error: 'Failed to fetch Mars weather data' });
+  }
+});
+
+app.get('/api/mars-images', async (req, res) => {
+  try {
+    const rover = req.query.rover || 'curiosity';
+    // A default Sol known to have images, or let frontend specify.
+    // For now, using a Sol that often has Curiosity images.
+    const sol = parseInt(req.query.sol) || 3900; // Example Sol, can be made more dynamic
+    
+    // Example camera preferences, can also be from query params
+    const preferredCameras = ['MAST', 'NAVCAM_RIGHT', 'NAVCAM_LEFT']; 
+
+    console.log(`Received request for /api/mars-images: rover=${rover}, sol=${sol}`);
+    const imageResults = await getMarsImages(rover, sol, preferredCameras);
+    
+    if (imageResults.length === 0) {
+       // Attempt with a different, more recent rover if Curiosity has no images for the sol
+       // This is a simple example of fallback logic.
+       if (rover === 'curiosity') {
+           console.log(`No images for Curiosity on sol ${sol}, trying Perseverance latest`);
+           const perseveranceImages = await getMarsImages('perseverance', null, ['MEDA_RSM']); // null sol for latest
+            if (perseveranceImages.length > 0) {
+               res.json(perseveranceImages);
+               return;
+           }
+       }
+      // If still no images, send empty or a specific status
+      // For now, sending empty array and client can handle 'no images found'.
+    }
+    res.json(imageResults);
+  } catch (error) {
+    console.error('Error fetching Mars images from API route:', error);
+    res.status(500).json({ error: 'Failed to fetch Mars images', message: error.message });
   }
 });
 
