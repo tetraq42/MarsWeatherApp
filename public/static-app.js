@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastUpdated = document.getElementById('last-updated');
 
     // NASA API key
-    const NASA_API_KEY = 'SDCqFh0iMgItHSP4eOWDg3fTf6vYW1ku9XPsndgg';
+    const NASA_API_KEY = 'DEMO_KEY'; // Replace with your actual key if running standalone
     
     // Fetch weather data directly from NASA API
     async function fetchWeatherData() {
@@ -133,11 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Hide loading, show content
         hideLoading();
-        document.querySelector('.sidebar').style.display = 'flex';
-        document.querySelector('.main-content').style.display = 'flex';
+        // document.querySelector('.sidebar').style.display = 'flex'; // Missing in static.html
+        // document.querySelector('.main-content').style.display = 'flex'; // Missing in static.html
         
         // Generate historical data for the forecast grid
-        generateHistoricalData(data);
+        generateHistoricalData(data); // Relies on '.forecast-grid' which is missing in static.html
         
         // Add note if this is mock data
         if (data.note) {
@@ -148,7 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Generate historical data for the forecast grid
     function generateHistoricalData(currentData) {
         const forecastGrid = document.querySelector('.forecast-grid');
-        if (!forecastGrid) return;
+        if (!forecastGrid) {
+            console.warn('Forecast grid element (.forecast-grid) not found. Skipping historical data generation.');
+            return; // Exit if element not found
+        }
         
         // Clear existing content
         forecastGrid.innerHTML = '';
@@ -201,8 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show loading state
     function showLoading() {
         loadingElement.style.display = 'flex';
-        document.querySelector('.sidebar').style.display = 'none';
-        document.querySelector('.main-content').style.display = 'none';
+        // document.querySelector('.sidebar').style.display = 'none'; // Missing in static.html
+        // document.querySelector('.main-content').style.display = 'none'; // Missing in static.html
         errorMessageElement.style.display = 'none';
     }
 
@@ -214,8 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show error message
     function showError() {
         loadingElement.style.display = 'none';
-        document.querySelector('.sidebar').style.display = 'none';
-        document.querySelector('.main-content').style.display = 'none';
+        // document.querySelector('.sidebar').style.display = 'none'; // Missing in static.html
+        // document.querySelector('.main-content').style.display = 'none'; // Missing in static.html
         errorMessageElement.style.display = 'flex';
     }
 

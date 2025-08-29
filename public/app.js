@@ -20,6 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const pressureMin = document.getElementById('pressure-min');
     const pressureMax = document.getElementById('pressure-max');
     const lastUpdated = document.getElementById('last-updated');
+    const mockDataNoteElement = document.getElementById('mock-data-note');
+
+    // DOM Elements for Mars Images
+    const marsImagesContainer = document.getElementById('mars-images-container');
+    const marsImagesError = document.getElementById('mars-images-error');
+    const fetchImagesBtn = document.getElementById('fetch-images-btn');
+    const roverSelect = document.getElementById('rover-select');
+    const solInput = document.getElementById('sol-input');
+    const marsImagesLoading = document.getElementById('mars-images-loading');
 
     // Fetch weather data from the API
     async function fetchWeatherData() {
@@ -63,19 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update wind data
         windAvg.textContent = formatValue(data.windSpeed.average);
-        windMin.textContent = formatValue(data.windSpeed.min);
-        windMax.textContent = formatValue(data.windSpeed.max);
+        // Ensure windMin and windMax elements exist before setting them
+        if (windMin) windMin.textContent = formatValue(data.windSpeed.min);
+        if (windMax) windMax.textContent = formatValue(data.windSpeed.max);
         
         // Update pressure data
         pressureAvg.textContent = formatValue(data.pressure.average);
-        pressureMin.textContent = formatValue(data.pressure.min);
-        pressureMax.textContent = formatValue(data.pressure.max);
+        // Ensure pressureMin and pressureMax elements exist before setting them
+        if (pressureMin) pressureMin.textContent = formatValue(data.pressure.min);
+        if (pressureMax) pressureMax.textContent = formatValue(data.pressure.max);
         
         // Update last updated timestamp
-        lastUpdated.textContent = new Date().toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        const dataTimestamp = new Date(data.date);
+        lastUpdated.textContent = dataTimestamp.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit'
+            second: '2-digit',
+            timeZone: 'UTC' // Assuming data.date is UTC
         });
         
         // Show the weather data section
@@ -83,9 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
         weatherDataElement.style.display = 'block';
         errorMessageElement.style.display = 'none';
         
-        // Add note if this is mock data
-        if (data.note) {
-            console.info('Note:', data.note);
+        // Add note if this is mock data or historical data
+        if (data.note && data.note.trim() !== '') { // Check if note is not empty
+            if (mockDataNoteElement) {
+                mockDataNoteElement.textContent = data.note;
+                mockDataNoteElement.style.display = 'block';
+            }
+            console.info('Data Note:', data.note); // Keep console log for debugging
+        } else {
+            if (mockDataNoteElement) {
+                mockDataNoteElement.textContent = '';
+                mockDataNoteElement.style.display = 'none';
+            }
         }
     }
 
@@ -108,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingElement.style.display = 'block';
         weatherDataElement.style.display = 'none';
         errorMessageElement.style.display = 'none';
+        if (mockDataNoteElement) mockDataNoteElement.style.display = 'none';
     }
 
     // Hide loading state
@@ -120,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingElement.style.display = 'none';
         weatherDataElement.style.display = 'none';
         errorMessageElement.style.display = 'block';
+        if (mockDataNoteElement) mockDataNoteElement.style.display = 'none';
     }
 
     // Event listeners
@@ -128,4 +155,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial data fetch
     fetchWeatherData();
+
+    // --- Mars Images Functionality ---
+
+    function showImageLoading() {
+        if(marsImagesLoading) marsImagesLoading.style.display = 'flex';
+        if(marsImagesContainer) marsImagesContainer.style.display = 'none';
+        if(marsImagesError) marsImagesError.style.display = 'none';
+    }
+
+    function hideImageLoading() {
+        if(marsImagesLoading) marsImagesLoading.style.display = 'none';
+    }
+
+    async function fetchMarsImages() {
+        showImageLoading();
+        const selectedRover = roverSelect.value;
+        const selectedSol = solInput.value;
+
+        if (!selectedSol || parseInt(selectedSol) < 0) {
+            if(marsImagesError) marsImagesError.textContent = 'Please enter a valid Sol day.';
+            if(marsImagesError) marsImagesError.style.display = 'block';
+            hideImageLoading();
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/mars-images?rover=${selectedRover}&sol=${selectedSol}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+            }
+            const images = await response.json();
+            displayMarsImages(images, selectedSol); // Pass sol for caption
+        } catch (error) {
+            console.error('Error fetching Mars images:', error);
+            if(marsImagesError) marsImagesError.textContent = `Failed to fetch images: ${error.message}`;
+            if(marsImagesError) marsImagesError.style.display = 'block';
+            if(marsImagesContainer) marsImagesContainer.innerHTML = ''; // Clear previous images
+            hideImageLoading();
+        }
+    }
+
+    function displayMarsImages(images, sol) {
+        hideImageLoading();
+        if(marsImagesContainer) marsImagesContainer.innerHTML = ''; // Clear previous images
+        if(marsImagesContainer) marsImagesContainer.style.display = 'grid'; // Assuming grid display
+
+        if (!images || images.length === 0) {
+            if(marsImagesError) marsImagesError.textContent = `No images found for Sol ${sol} from this rover. Try a different Sol or rover.`;
+            if(marsImagesError) marsImagesError.style.display = 'block';
+            return;
+        }
+        if(marsImagesError) marsImagesError.style.display = 'none';
+
+        images.forEach(image => {
+            const imgCard = document.createElement('div');
+            imgCard.className = 'image-card';
+
+            const imgElement = document.createElement('img');
+            imgElement.src = image.img_src; // Backend attempts https
+            imgElement.alt = `Mars image from ${image.camera_full_name} on Sol ${image.sol}, Rover: ${image.rover_name}`;
+            imgElement.onerror = () => { // Basic error handling for broken image links
+               imgElement.alt = `Failed to load image: ${image.img_src}`;
+               imgCard.classList.add('img-error'); // Add class for styling broken image
+            };
+
+            const caption = document.createElement('p');
+            caption.className = 'image-caption';
+            caption.innerHTML = `<b>${image.rover_name} Rover</b><br>
+                               Camera: ${image.camera_full_name}<br>
+                               Sol: ${image.sol}, Earth Date: ${image.earth_date}`;
+            
+            imgCard.appendChild(imgElement);
+            imgCard.appendChild(caption);
+            if(marsImagesContainer) marsImagesContainer.appendChild(imgCard);
+        });
+    }
+
+    // Event Listener for fetching images
+    if(fetchImagesBtn) fetchImagesBtn.addEventListener('click', fetchMarsImages);
+
 });

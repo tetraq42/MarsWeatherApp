@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const dotenv = require('dotenv');
 
-dotenv.config();
+// dotenv.config(); // Redundant: Called in main entry point (index.js)
 
 /**
  * Sets up AWS SDK configuration

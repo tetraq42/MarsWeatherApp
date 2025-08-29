@@ -12,7 +12,7 @@
     <div class="container">
         <div class="app-layout">
             <!-- Sidebar with key weather stats -->
-            <div class="sidebar">
+            <div class="sidebar data-section">
                 <div class="sidebar-header">
                     <h1>Mars Weather</h1>
                     <p>Real-time conditions on the Red Planet</p>
@@ -54,7 +54,11 @@
                         </div>
                         <div>
                             <span class="stat-value" id="wind-avg">--</span>
-                            <span class="stat-unit">m/s</span>
+                            <span class="stat-unit">m/s (avg)</span>
+                        </div>
+                        <div class="stat-range">
+                            <div class="stat-min">Min: <span id="wind-min">--</span> m/s</div>
+                            <div class="stat-max">Max: <span id="wind-max">--</span> m/s</div>
                         </div>
                     </div>
                     <div class="stat-item">
@@ -63,7 +67,11 @@
                         </div>
                         <div>
                             <span class="stat-value" id="pressure-avg">--</span>
-                            <span class="stat-unit">Pa</span>
+                            <span class="stat-unit">Pa (avg)</span>
+                        </div>
+                        <div class="stat-range">
+                            <div class="stat-min">Min: <span id="pressure-min">--</span> Pa</div>
+                            <div class="stat-max">Max: <span id="pressure-max">--</span> Pa</div>
                         </div>
                     </div>
                 </div>
@@ -81,11 +89,12 @@
                     <button id="refresh-btn" class="refresh-btn">
                         <i class="fas fa-sync-alt"></i> Refresh
                     </button>
+                    <p id="mock-data-note" class="mock-note"></p>
                 </div>
             </div>
 
             <!-- Main content area -->
-            <div class="main-content">
+            <div class="main-content data-section">
                 <!-- Weather forecast panel -->
                 <div class="forecast-panel">
                     <div class="forecast-header">
@@ -125,6 +134,32 @@
                         <p id="mars-image-attribution">Mars images courtesy of NASA/JPL-Caltech</p>
                     </div>
                 </div>
+                
+                <section id="mars-images-section" class="data-section">
+                    <h2>Recent Images from Mars</h2>
+                    <div class="controls">
+                        <label for="rover-select">Rover:</label>
+                        <select id="rover-select">
+                            <option value="curiosity" selected>Curiosity</option>
+                            <option value="perseverance">Perseverance</option>
+                            <option value="opportunity">Opportunity</option>
+                            <option value="spirit">Spirit</option>
+                        </select>
+                        <label for="sol-input">Sol:</label>
+                        <input type="number" id="sol-input" value="3900" placeholder="Enter Sol day">
+                        <button id="fetch-images-btn" class="refresh-btn">
+                            <i class="fas fa-camera"></i> Fetch Images
+                        </button>
+                    </div>
+                    <div id="mars-images-loading" class="loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Fetching images from Mars...</p>
+                    </div>
+                    <div id="mars-images-container" class="images-grid">
+                        <!-- Image cards will be injected here by app.js -->
+                    </div>
+                    <p id="mars-images-error" class="error-message" style="display:none;"></p>
+                </section>
                 
                 <!-- Footer -->
                 <footer>
